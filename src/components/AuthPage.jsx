@@ -110,7 +110,7 @@ export default function AuthPage() {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                placeholder="John Doe"
+                placeholder="FirstName LastName"
                 style={{...styles.input, ...(errors.name ? styles.inputError : {})}}
               />
               {errors.name && <span style={styles.errorMessage}>{errors.name}</span>}
@@ -126,7 +126,7 @@ export default function AuthPage() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              placeholder="you@example.com"
+              placeholder="FirstNameLastName@example.com"
               style={{...styles.input, ...(errors.email ? styles.inputError : {})}}
             />
             {errors.email && <span style={styles.errorMessage}>{errors.email}</span>}
@@ -215,6 +215,8 @@ export default function AuthPage() {
 }
 
 const styles = {
+
+
   container: {
     minHeight: '100vh',
     display: 'flex',
