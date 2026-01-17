@@ -90,8 +90,8 @@ if(isMobile){
 }
 
 const navItems = [
-  { name: 'Home',  href: '/' },
-  { name: 'Afffimations', href: '/Affirmation' },
+  { name: 'Home',  href: '/Home' },
+  { name: 'Affirmation', href: '/Affirmation' },
   { name: 'TalkSpace', href: '/TalkSpace' },
   { name: 'SignUp/Login', href: '/AuthPage' },
 ];

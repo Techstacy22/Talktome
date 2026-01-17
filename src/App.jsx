@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AuthPage from "./components/AuthPage";
 import NavBar from "./components/NavBar";
+import Affirmation from "./pages/Affirmation";
 
 
 
@@ -10,7 +11,8 @@ export default function App() {
     <Router>
         <NavBar />
       <Routes>
-        <Route path="/*" element={<AuthPage />} />
+        <Route path="/AuthPage" element={<AuthPage />} />
+        <Route path="/Affirmation" element={<Affirmation />} />
       </Routes>
     </Router>
   );
