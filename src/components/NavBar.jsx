@@ -13,7 +13,8 @@ export default function NavBar(){
         position : 'sticky', //navbar sticks to view point when scrolling 
         top : 0,
         zIndex : 1000, //ensures navbar is on top of other elements
-        boxShadow : '0 2px 4px rgba(0,0,0,0.1)' //adds a subtle shadow below the navbar
+        boxShadow : '0 2px 4px rgba(0,0,0,0.1)', //adds a subtle shadow below the navbar
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
         
       },
       //container that holds Nav Content 
@@ -90,7 +91,7 @@ if(isMobile){
 }
 
 const navItems = [
-  { name: 'Home',  href: '/Home' },
+  { name: 'Home',  href: '/' },
   { name: 'Affirmation', href: '/Affirmation' },
   { name: 'TalkSpace', href: '/TalkSpace' },
   { name: 'SignUp/Login', href: '/AuthPage' },

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Affirmation() {
     const affirmations = [
@@ -58,6 +59,10 @@ export default function Affirmation() {
     const randomIndex = Math.floor(Math.random() * affirmations.length);
         setCurrentAffirmation(randomIndex);
     }, [affirmations.length]);
+    const navigate = useNavigate();
+    const handleGetStarted = () => {
+      navigate('/AuthPage');
+    };
 
    
 
@@ -73,7 +78,7 @@ export default function Affirmation() {
       alignItems: 'center', 
       justifyContent: 'center', 
       padding: '20px', 
-      fontFamily: 'Times New Roman, serif'
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
     },
     
     // Card that contains the affirmation content
@@ -164,8 +169,22 @@ export default function Affirmation() {
               </p>
             </div>
   
-            {/* Button container with both action buttons */}
             <div style={styles.buttonContainer}>
+               <button 
+                style={styles.primaryButton}
+                onClick={handleGetStarted}
+                onMouseEnter={(e) => {
+                  e.target.style.transform = 'translateY(-2px)';
+                  e.target.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.6)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = 'translateY(0)';
+                  e.target.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.4)';
+                }}
+              >
+                 GET STARTED
+              </button> 
+          
               {/* Button to get a new random affirmation */}
               <button 
                 style={styles.primaryButton}
@@ -181,11 +200,12 @@ export default function Affirmation() {
               >
                  MORE AFFIRMATIONS
               </button>
+              </div>
               
              
             </div>
           </div>
-        </div>
+       
       ) : null
     );
   }
