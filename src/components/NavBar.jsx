@@ -1,23 +1,35 @@
 import React, { useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, LogOut } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function NavBar(){
   //CHECK IF THE MENU IS OPEN OR CLOSED. FALSE IS CLOSED, TRUE IS OPEN
     const [isOpen, setIsOpen] = useState(false);
+    // Get the current user and logout function from AuthContext
+    const { currentUser, logout } = useAuth();
+
+    const handleLogout = async () => {
+      try {
+        await logout();
+        window.location.href = '/'; // Redirect to home after logout
+      } catch (error) {
+        console.error('Logout failed:', error);
+      }
+    };
 
     //JAVASCRIPT OBJECT TO STORE MY CSS STYLES
     const styles = {
       nav: {
         backgroundColor: 'rgb(253, 253, 255)',
         padding : '10px 20px',
-        position : 'sticky', //navbar sticks to view point when scrolling 
+        position : 'sticky', //navbar sticks to view point when scrolling
         top : 0,
         zIndex : 1000, //ensures navbar is on top of other elements
         boxShadow : '0 2px 4px rgba(0,0,0,0.1)', //adds a subtle shadow below the navbar
         fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
-        
+
       },
-      //container that holds Nav Content 
+      //container that holds Nav Content
       container: {
         maxWidth : '1200px',
         margin : '0 auto',
@@ -45,7 +57,7 @@ export default function NavBar(){
       //navLinks styles
       navLinks: {
         display : 'flex',//arranges links in a row
-        gap : '32px',
+        gap : '20px',
         listStyle : 'none', //removes default bullet points from list
         margin : 0,
         padding : 0,
@@ -68,54 +80,82 @@ export default function NavBar(){
       },
       //style for each link
       link: {
-        color: '#0e0e0f',
+        color: '#4a5568',
         textDecoration : 'none',
-        fontSize : '18px',
+        fontSize : '15px',
+        fontWeight: '500',
         transition : 'color 0.3s ease', //color change over 0.3 seconds
-        padding : '8px 16px'
+        padding : '8px 12px'
       },
       //hover effect for links
       linkHover: {
         color: '#8e96d6ff'
+      },
+      // Style for the logout button in the navbar
+      authBtn: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '6px',
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        color: 'white',
+        border: 'none',
+        borderRadius: '8px',
+        padding: '8px 16px',
+        fontSize: '14px',
+        fontWeight: '500',
+        cursor: 'pointer',
+        transition: 'opacity 0.2s'
+      },
+      // Style for the login link in the navbar
+      loginLink: {
+        color: 'white',
+        textDecoration: 'none',
+        fontSize: '14px',
+        fontWeight: '600',
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        padding: '8px 20px',
+        borderRadius: '8px',
+        transition: 'opacity 0.2s'
       }
 };
 
-//media query to check if the screen width is 768px or less
-const mediaQuery = window.matchMedia('(max-width: 768px)');
+//media query to check if the screen width is 900px or less
+const mediaQuery = window.matchMedia('(max-width: 900px)');
 //if mobile screen TRUE, FALSE if desktop
-const isMobile = mediaQuery.matches;  
-//modify to show hamburger menu button and hide desktop nav links 
+const isMobile = mediaQuery.matches;
+//modify to show hamburger menu button and hide desktop nav links
 if(isMobile){
   styles.menuButton.display = 'block';
   styles.navLinks.display = 'none';
 }
 
+// Build nav items dynamically based on whether user is logged in
 const navItems = [
-  { name: 'Home',  href: '/' },
-  { name: 'Affirmation', href: '/Affirmation' },
-  { name: 'TalkSpace', href: '/TalkSpace' },
-  { name: 'SignUp/Login', href: '/AuthPage' },
+  { name: 'Home', href: '/' },
+  { name: 'Progress', href: '/dashboard' },
+  { name: 'Talk', href: '/talkspace' },
+  { name: 'Journal', href: '/journal' },
+  { name: 'Therapists', href: '/therapists' },
+  { name: 'Affirmations', href: '/affirmation' },
 ];
 
     return(
         <nav style={styles.nav}>
           <div style={styles.container}>
             <a href="/" style={styles.logo}>TalktoMe</a>
-            
+
 {/* Hamburger menu button */}
-            <button 
+            <button
               style={styles.menuButton}
-              onClick={() => setIsOpen(!isOpen)}//changes state when clivked on 
+              onClick={() => setIsOpen(!isOpen)}//changes state when clivked on
               aria-label="Toggle menu"
             >
               {/* if state is true show X icon, otherwise show menun icon  */}
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
-          
+
             <ul style={isMobile ? { display: 'none' } : styles.navLinks}>
-              {/* //looping through navItems array using a map, cfeating a link for each item   */}
               {navItems.map((item) => (
-                //listing items with a special key to help react identify them uniquely 
                 <li key={item.name}>
                   <a href={item.href}
                    style={styles.link}
@@ -124,19 +164,39 @@ const navItems = [
                    >{item.name }</a>
                 </li>
               ))}
+              {/* Show user greeting + logout, or login link */}
+              <li>
+                {currentUser ? (
+                  <button onClick={handleLogout} style={styles.authBtn}>
+                    <LogOut size={16} />
+                    {currentUser.displayName || 'Logout'}
+                  </button>
+                ) : (
+                  <a href="/authpage" style={styles.loginLink}>Login</a>
+                )}
+              </li>
             </ul>
             {/* Mobile dropdown menu */}
-            {/* render if both isOpen is true and isMobile is true */}
             {isOpen && isMobile && (
               <ul style={styles.navLinksMobile}>
                 {navItems.map((item) => (
                   <li key={item.name}>
                     <a href={item.href}
                      style={styles.link}
-                    onClick={ () => setIsOpen(false)}// mobile menu closes when link is clicked
+                    onClick={ () => setIsOpen(false)}
                      >{item.name}</a>
                   </li>
                 ))}
+                <li>
+                  {currentUser ? (
+                    <button onClick={() => { handleLogout(); setIsOpen(false); }} style={styles.authBtn}>
+                      <LogOut size={16} />
+                      {currentUser.displayName || 'Logout'}
+                    </button>
+                  ) : (
+                    <a href="/authpage" style={styles.link} onClick={() => setIsOpen(false)}>Login</a>
+                  )}
+                </li>
               </ul>
             )}
           </div>

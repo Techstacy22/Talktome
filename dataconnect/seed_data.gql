@@ -1,0 +1,65 @@
+mutation CreateSeedData @transaction @auth(level: PUBLIC, insecureReason: "This mutation is intended for seeding the database with initial data and does not require authentication.") {
+  language_insertMany(data: [
+    {
+      id: "550e8400-e29b-41d4-a716-446655440000",
+      code: "en",
+      name: "English"
+    },
+    {
+      id: "550e8400-e29b-41d4-a716-446655440001",
+      code: "es",
+      name: "Spanish"
+    }
+  ])
+  user_insertMany(data: [
+    {
+      id: "650e8400-e29b-41d4-a716-446655440002",
+      displayName: "Demo User 1",
+      email: "demouser1@example.com",
+      createdAt: "2024-04-26T12:00:00Z"
+    },
+    {
+      id: "750e8400-e29b-41d4-a716-446655440003",
+      displayName: "Demo User 2",
+      email: "demouser2@example.com",
+      createdAt: "2024-04-26T13:00:00Z"
+    }
+  ])
+  learningLogEntry_insertMany(data: [
+    {
+      id: "850e8400-e29b-41d4-a716-446655440004",
+      userId: "650e8400-e29b-41d4-a716-446655440002",
+      content: "Example log entry 1",
+      createdAt: "2024-04-26T14:00:00Z",
+      type: "vocabulary"
+    },
+    {
+      id: "950e8400-e29b-41d4-a716-446655440005",
+      userId: "750e8400-e29b-41d4-a716-446655440003",
+      content: "Example log entry 2",
+      createdAt: "2024-04-26T15:00:00Z",
+      type: "grammar"
+    }
+  ])
+  conversationSession_insertMany(data: [
+    {
+      id: "a50e8400-e29b-41d4-a716-446655440006",
+      participant1Id: "650e8400-e29b-41d4-a716-446655440002",
+      participant2Id: "750e8400-e29b-41d4-a716-446655440003",
+      createdAt: "2024-04-27T10:00:00Z",
+      endTime: "2024-04-27T10:30:00Z",
+      startTime: "2024-04-27T10:00:00Z",
+      status: "completed"
+    }
+  ])
+  feedback_insertMany(data: [
+    {
+      id: "b50e8400-e29b-41d4-a716-446655440007",
+      conversationSessionId: "a50e8400-e29b-41d4-a716-446655440006",
+      giverId: "650e8400-e29b-41d4-a716-446655440002",
+      receiverId: "750e8400-e29b-41d4-a716-446655440003",
+      createdAt: "2024-04-27T10:35:00Z",
+      rating: 5
+    }
+  ])
+}

@@ -1,70 +1,38 @@
-# Getting Started with Create React App
+# Talk to Me
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**Your Mind Deserves to Be Heard**
 
-## Available Scripts
+Talk to Me is a mental wellness web application that provides a safe space to explore your thoughts, discover patterns, and find clarity. Express yourself through conversations, journaling, and interactive visualizations of your inner world.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Talk It Out
+Have meaningful conversations with an AI that listens, asks the right questions, and helps you understand your thoughts.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### See Your Mind
+Watch your thoughts appear as an interactive mind map in real-time, revealing patterns and connections you might not see on your own.
 
-### `npm test`
+### Private Journal
+Write freely in your personal space. Track your mood, add tags, and reflect with guided prompts.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Track Progress
+See your emotional journey over time with beautiful charts and discover insights about your patterns.
 
-### `npm run build`
+### Find Support
+Connect with licensed therapists who specialize in what you need. You don't have to do this alone.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Daily Affirmations
+Start each day with personalized affirmations that uplift and inspire your journey.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## How It Works
 
-### `npm run eject`
+1. **Share Your Thoughts** - Start a conversation or write in your journal. Express whatever's on your mind.
+2. **Discover Patterns** - Watch as your thoughts are visualized and patterns emerge.
+3. **Grow & Heal** - Use insights to understand yourself better. Connect with professionals when you're ready.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+used firebase auth for the authentication because it handles signup/login, Google/Github sign-in, password reset. it was also easiest to implement the real security.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

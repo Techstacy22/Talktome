@@ -1,8 +1,17 @@
 import React, { useState } from 'react';
+import { useAuth } from '../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
+
 
 export default function AuthPage() {
+  // Pull auth functions from our AuthContext
+  // These are the Firebase functions we defined in AuthContext.jsx
+  const { signup, login, signInWithGoogle, signInWithGithub } = useAuth();
+  // useNavigate lets us redirect the user after successful login
+  const navigate = useNavigate();
+
   // State management - used to change and update the UI
-  const [isLogin, setIsLogin] = useState(true); 
+  const [isLogin, setIsLogin] = useState(true);
   // Starting value set to true for login page and false is sign up page
   const [formData, setFormData] = useState({
     name: '',
@@ -11,6 +20,7 @@ export default function AuthPage() {
     confirmPassword: ''
   }); // A container that holds all the user input
   const [errors, setErrors] = useState({}); // To hold error messages
+  const [loading, setLoading] = useState(false); // Prevents double-clicking submit
 
   // Function to handle change in inputs
   const handleChange = (e) => {
@@ -56,23 +66,84 @@ export default function AuthPage() {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  // async/await is used because Firebase calls go over the internet
+  // and we need to wait for a response before continuing
+  const handleSubmit = async (e) => {
     e.preventDefault(); // Prevents page reload
-    
+
     const newErrors = validateForm();
-    
+
     if (Object.keys(newErrors).length === 0) {
-      // No errors - form is valid!
-      if (isLogin) {
-        alert(`Welcome back! Logging in with: ${formData.email}`);
-      } else {
-        alert(`Account created for: ${formData.name}!`);
+      // No errors - form is valid! Now talk to Firebase
+      try {
+        setLoading(true); // Disable submit button while waiting
+        if (isLogin) {
+          // signInWithEmailAndPassword checks credentials with Firebase
+          await login(formData.email, formData.password);
+        } else {
+          // createUserWithEmailAndPassword creates a new account
+          await signup(formData.email, formData.password, formData.name);
+        }
+        // If we get here, login/signup succeeded - redirect to home
+        navigate('/');
+      } catch (error) {
+        // Firebase returns error codes like 'auth/wrong-password'
+        // We translate them into user-friendly messages
+        setErrors({ submit: getErrorMessage(error.code) });
+      } finally {
+        setLoading(false); // Re-enable submit button
       }
-      // In a real app, you'd send this data to your server here
     } else {
       setErrors(newErrors);
     }
   };
+
+  // Google sign-in handler
+  const handleGoogleSignIn = async () => {
+    try {
+      setLoading(true);
+      await signInWithGoogle(); // Opens Google popup
+      navigate('/');
+    } catch (error) {
+      setErrors({ submit: getErrorMessage(error.code) });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // GitHub sign-in handler
+  const handleGithubSignIn = async () => {
+    try {
+      setLoading(true);
+      await signInWithGithub(); // Opens GitHub popup
+      navigate('/');
+    } catch (error) {
+      setErrors({ submit: getErrorMessage(error.code) });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Translate Firebase error codes into friendly messages
+  function getErrorMessage(code) {
+    switch (code) {
+      case 'auth/user-not-found':
+        return 'No account found with this email.';
+      case 'auth/wrong-password':
+      case 'auth/invalid-credential':
+        return 'Incorrect email or password.';
+      case 'auth/email-already-in-use':
+        return 'An account with this email already exists.';
+      case 'auth/weak-password':
+        return 'Password should be at least 6 characters.';
+      case 'auth/too-many-requests':
+        return 'Too many attempts. Please try again later.';
+      case 'auth/popup-closed-by-user':
+        return 'Sign-in popup was closed. Please try again.';
+      default:
+        return 'Something went wrong. Please try again.';
+    }
+  }
 
   // Switch between login and signup
   const toggleMode = () => {
@@ -171,9 +242,16 @@ export default function AuthPage() {
             </div>
           )}
 
-          {/* Submit button */}
-          <button onClick={handleSubmit} style={styles.submitBtn}>
-            {isLogin ? 'Sign In' : 'Create Account'}
+          {/* Show Firebase errors (wrong password, account exists, etc.) */}
+          {errors.submit && <p style={styles.submitError}>{errors.submit}</p>}
+
+          {/* Submit button - disabled while loading to prevent double clicks */}
+          <button
+            onClick={handleSubmit}
+            style={{...styles.submitBtn, ...(loading ? styles.submitBtnDisabled : {})}}
+            disabled={loading}
+          >
+            {loading ? 'Please wait...' : (isLogin ? 'Sign In' : 'Create Account')}
           </button>
         </div>
 
@@ -193,7 +271,7 @@ export default function AuthPage() {
         </div>
 
         <div style={styles.socialButtons}>
-          <button style={styles.socialBtn}>
+          <button style={styles.socialBtn} onClick={handleGoogleSignIn} disabled={loading}>
             <svg viewBox="0 0 24 24" width="20" height="20" style={styles.socialIcon}>
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
               <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -202,7 +280,7 @@ export default function AuthPage() {
             </svg>
             Google
           </button>
-          <button style={styles.socialBtn}>
+          <button style={styles.socialBtn} onClick={handleGithubSignIn} disabled={loading}>
             <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style={styles.socialIcon}>
               <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
             </svg>
@@ -343,6 +421,20 @@ const styles = {
     cursor: 'pointer',
     transition: 'transform 0.2s, box-shadow 0.2s',
     marginTop: '10px'
+  },
+  submitBtnDisabled: {
+    opacity: 0.7,
+    cursor: 'not-allowed'
+  },
+  submitError: {
+    color: '#e53e3e',
+    fontSize: '14px',
+    textAlign: 'center',
+    margin: 0,
+    padding: '10px',
+    background: '#fff5f5',
+    borderRadius: '8px',
+    border: '1px solid #fed7d7'
   },
   footer: {
     textAlign: 'center',

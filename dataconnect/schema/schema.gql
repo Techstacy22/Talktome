@@ -1,0 +1,41 @@
+type User @table {
+  displayName: String!
+  email: String!
+  createdAt: Timestamp!
+  photoUrl: String
+  bio: String
+  nativeLanguages: [String]
+  learningLanguages: [String]
+}
+
+type Language @table {
+  name: String!
+  code: String!
+}
+
+type ConversationSession @table {
+  participant1: User!
+  participant2: User!
+  startTime: Timestamp!
+  endTime: Timestamp!
+  status: String!
+  createdAt: Timestamp!
+  notes: String
+}
+
+type Feedback @table {
+  giver: User!
+  receiver: User!
+  conversationSession: ConversationSession!
+  rating: Int!
+  createdAt: Timestamp!
+  comment: String
+}
+
+type LearningLogEntry @table {
+  user: User!
+  type: String!
+  content: String!
+  createdAt: Timestamp!
+  associatedLanguage: Language
+}

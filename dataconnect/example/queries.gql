@@ -1,0 +1,60 @@
+mutation CreateLearningLogEntry($userId: UUID!, $content: String!, $type: String!) @auth(level: USER) {
+  learningLogEntry_insert(data: {
+    userId: $userId,
+    content: $content,
+    type: $type,
+    createdAt_expr: "request.time"
+  })
+}
+
+query GetUserLearningLogEntries($userId: UUID!) @auth(level: USER) {
+  learningLogEntries(where: {userId: {eq: $userId}}) {
+    id
+    content
+    createdAt
+    type
+  }
+}
+
+mutation GiveFeedback($conversationSessionId: UUID!, $receiverId: UUID!, $comment: String, $rating: Int!) @auth(level: USER) {
+  feedback_insert(data: {
+    conversationSessionId: $conversationSessionId,
+    giverId_expr: "auth.uid",
+    receiverId: $receiverId,
+    comment: $comment,
+    rating: $rating,
+    createdAt_expr: "request.time"
+  })
+}
+
+query GetConversationSession(@auth(level: USER)
+  conversationSession(id: $id) {
+    id
+    participant1 {
+      id
+      displayName
+    }
+    participant2 {
+      id
+      displayName
+    }
+    startTime
+    endTime
+    status
+    notes
+    feedbacks_on_conversationSession {
+      id
+      giver {
+        id
+        displayName
+      }
+      receiver {
+        id
+        displayName
+      }
+      comment
+      rating
+      createdAt
+    }
+  }
+}
