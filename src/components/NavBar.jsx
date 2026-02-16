@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Menu, X, LogOut } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function NavBar(){
@@ -142,7 +143,7 @@ const navItems = [
     return(
         <nav style={styles.nav}>
           <div style={styles.container}>
-            <a href="/" style={styles.logo}>TalktoMe</a>
+            <Link to="/" style={styles.logo}>TalktoMe</Link>
 
 {/* Hamburger menu button */}
             <button
@@ -157,11 +158,11 @@ const navItems = [
             <ul style={isMobile ? { display: 'none' } : styles.navLinks}>
               {navItems.map((item) => (
                 <li key={item.name}>
-                  <a href={item.href}
+                  <Link to={item.href}
                    style={styles.link}
                    onMouseOver={(e) => e.currentTarget.style.color = '#60a5fa' }
                    onMouseOut={(e) => e.currentTarget.style.color = '#667eea' }
-                   >{item.name }</a>
+                   >{item.name }</Link>
                 </li>
               ))}
               {/* Show user greeting + logout, or login link */}
@@ -172,7 +173,7 @@ const navItems = [
                     {currentUser.displayName || 'Logout'}
                   </button>
                 ) : (
-                  <a href="/authpage" style={styles.loginLink}>Login</a>
+                  <Link to="/authpage" style={styles.loginLink}>Login</Link>
                 )}
               </li>
             </ul>
@@ -181,10 +182,10 @@ const navItems = [
               <ul style={styles.navLinksMobile}>
                 {navItems.map((item) => (
                   <li key={item.name}>
-                    <a href={item.href}
+                    <Link to={item.href}
                      style={styles.link}
                     onClick={ () => setIsOpen(false)}
-                     >{item.name}</a>
+                     >{item.name}</Link>
                   </li>
                 ))}
                 <li>
@@ -194,7 +195,7 @@ const navItems = [
                       {currentUser.displayName || 'Logout'}
                     </button>
                   ) : (
-                    <a href="/authpage" style={styles.link} onClick={() => setIsOpen(false)}>Login</a>
+                    <Link to="/authpage" style={styles.link} onClick={() => setIsOpen(false)}>Login</Link>
                   )}
                 </li>
               </ul>

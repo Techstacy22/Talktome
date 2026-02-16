@@ -225,21 +225,7 @@ export default function Home() {
       boxShadow: '0 8px 30px rgba(102, 126, 234, 0.4)',
       transition: 'transform 0.2s'
     },
-    // Crisis Banner
-    crisisBanner: {
-      background: '#fed7d7',
-      padding: '15px 20px',
-      textAlign: 'center'
-    },
-    crisisText: {
-      color: '#c53030',
-      fontSize: '0.95rem'
-    },
-    crisisLink: {
-      color: '#c53030',
-      fontWeight: '700',
-      textDecoration: 'underline'
-    },
+  
 };
 
   const features = [
@@ -289,12 +275,7 @@ export default function Home() {
 
   return (
     <div style={styles.container}>
-      {/* Crisis Banner */}
-      <div style={styles.crisisBanner}>
-        <p style={styles.crisisText}>
-          If you're in crisis, please call or text <a href="tel:988" style={styles.crisisLink}>988</a> (Suicide & Crisis Lifeline) - Available 24/7
-        </p>
-      </div>
+  
 
       {/* Hero Section */}
       <section style={styles.hero}>

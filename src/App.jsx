@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import NavBar from "./components/NavBar";
 import Home from "./pages/Home";
@@ -12,21 +12,18 @@ import AuthPage from "./components/AuthPage";
 
 export default function App() {
   return (
-    // AuthProvider must wrap everything so all components can access auth state
-    // It goes OUTSIDE Router because auth state is needed everywhere
+    
     <AuthProvider>
-      <Router>
-        <NavBar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/talkspace" element={<Talkspace />} />
-          <Route path="/journal" element={<Journal />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/therapists" element={<Therapists />} />
-          <Route path="/affirmation" element={<Affirmation />} />
-          <Route path="/authpage" element={<AuthPage />} />
-        </Routes>
-      </Router>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/talkspace" element={<Talkspace />} />
+        <Route path="/journal" element={<Journal />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/therapists" element={<Therapists />} />
+        <Route path="/affirmation" element={<Affirmation />} />
+        <Route path="/authpage" element={<AuthPage />} />
+      </Routes>
     </AuthProvider>
   );
 }
